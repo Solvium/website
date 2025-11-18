@@ -2,6 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Color Scheme */
+:root {
+  --brand-background: #040022;
+  --brand-container: #1e3a5f;
+  --brand-container-light: #0075ea;
+  --brand-accent: #4a9eff;
+  --brand-text: #ffffff;
+  --brand-text-secondary: #cbd5e1;
+  --brand-text-muted: #94a3b8;
+}
+
+/* Particle animations */
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) translateX(0px);
+  }
+  25% {
+    transform: translateY(75vh) translateX(10px);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-5px);
+  }
+  75% {
+    transform: translateY(25vh) translateX(15px);
+  }
+  100% {
+    transform: translateY(-10vh) translateX(0px);
+  }
+}
+
+@keyframes particle-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.particle {
+  animation: particle-float var(--duration) infinite linear var(--delay), particle-pulse 2s infinite ease-in-out;
+}
+
 /* BaseHub Theme CSS Custom Properties */
 
 body {

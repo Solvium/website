@@ -18,8 +18,8 @@ export const Header = () => {
   ];
 
   return (
-    <header className="sticky left-0 top-0 z-[110] flex w-full flex-col border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-16 bg-gradient-to-r from-background via-background to-background/95">
+    <header className="sticky left-0 top-0 z-[110] flex w-full flex-col border-b border-border/40" style={{backgroundColor: 'var(--brand-background)'}}>
+      <div className="flex h-16">
         <div className="container mx-auto flex w-full items-center justify-between px-6 lg:px-8">
           {/* Logo */}
           <ButtonLink
@@ -29,7 +29,7 @@ export const Header = () => {
           >
             <div className="relative">
               <Image
-                src={logo}
+                src="/images/Logo.svg" 
                 alt="Solvium Logo"
                 priority
                 height={40}
@@ -37,7 +37,7 @@ export const Header = () => {
                 className="drop-shadow-sm"
               />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-white">
               Solvium
             </span>
           </ButtonLink>
@@ -48,7 +48,7 @@ export const Header = () => {
               <ButtonLink
                 key={item._title}
                 unstyled
-                className="relative px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg group"
+                className="relative px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg group"
                 href={item.url}
               >
                 <span className="relative z-10">{item._title}</span>
@@ -60,12 +60,12 @@ export const Header = () => {
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:block">
-              <ThemeSwitcher />
+              {/* <ThemeSwitcher /> */}
             </div>
 
             {/* CTA Button */}
             <ButtonLink
-              className="hidden md:inline-flex bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200 border-0"
+              className="hidden md:inline-flex bg-[#FF309b] hover:from-primary/90 hover:to-primary text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0"
               href="/games"
             >
               Play Now
