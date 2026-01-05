@@ -1,6 +1,6 @@
 import "../basehub.config";
 import "../styles/globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Pixelify_Sans, Montserrat } from "next/font/google";
 import { basehub } from "basehub";
 import { Toolbar } from "basehub/next-toolbar";
 import { Providers } from "./providers";
@@ -10,6 +10,8 @@ import { themeFragment } from "../context/basehub-theme-provider";
 import { PlaygroundSetupModal } from "../components/playground-notification";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { SolviumFooter } from "@/components/solvium-footer";
+import { ParticleBackground } from "@/components/particle-background";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -36,6 +38,20 @@ const geistMono = Geist_Mono({
   display: "swap",
   variable: "--font-mono",
   fallback: ["monaco", "monospace"],
+});
+
+const pixelifySans = Pixelify_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-pixelify",
+  weight: ["400", "500", "600", "700"],
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const dynamic = "force-static";
@@ -84,14 +100,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html suppressHydrationWarning lang="en">
       <body
-        className={`min-h-svh max-w-[100vw] bg-[--surface-primary] text-[--text-primary] dark:bg-[--dark-surface-primary] dark:text-[--dark-text-primary] ${geistMono.variable} ${geist.variable} font-sans`}
+        className={`min-h-svh max-w-[100vw] bg-[--surface-primary] text-[--text-primary] dark:bg-[--dark-surface-primary] dark:text-[--dark-text-primary] ${geistMono.variable} ${geist.variable} ${pixelifySans.variable} ${montserrat.variable}`}
+        style={{fontFamily: 'var(--font-montserrat), sans-serif'}}
       >
         <Providers>
+          {/* Particle Background */}
+          <ParticleBackground />
           {/* Header */}
           <Header  />
-          <main className="min-h-[calc(100svh-var(--header-height))]">{children}</main>
-          {/* <Newsletter newsletter={footer.newsletter} /> */}
+          <main className="min-h-[calc(100svh-var(--header-height))] relative z-20">{children}</main>
           {/* Footer */}
+          <SolviumFooter />
           {/* <Footer footer={footer} logo={settings.logo} /> */}
         </Providers>
       </body>
