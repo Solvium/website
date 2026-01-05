@@ -9,13 +9,13 @@ import { Vision } from "./_sections/vision"
 export default function HomePage() {
   return (
     <main>
-      <SolviumHero />
-      <CoreProblem />
-      <UniqueSolution />
-      <KeyMetrics />
-      <RevenueModel />
-      <UnfairAdvantage />
-      <Vision />
+      <div id="home"><SolviumHero /></div>
+      <div id="problem"><CoreProblem /></div>
+      <div id="solution"><UniqueSolution /></div>
+      <div id="metrics"><KeyMetrics /></div>
+      <div id="revenue"><RevenueModel /></div>
+      <div id="advantage"><UnfairAdvantage /></div>
+      <div id="vision"><Vision /></div>
     </main>
   )
 }

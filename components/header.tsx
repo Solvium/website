@@ -3,22 +3,45 @@ import { ButtonLink } from "@/common/button";
 import { ThemeSwitcher } from "./theme-switcher";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import logo from "../public/LOGO 3.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
-    { _title: "Games", url: "/games" },
-    { _title: "Leaderboard", url: "/leaderboard" },
-    { _title: "Rewards", url: "/rewards" },
-    { _title: "Community", url: "/community" },
-    { _title: "About", url: "/about" },
+    { _title: "Problem", url: "/#problem" },
+    { _title: "Solution", url: "/#solution" },
+    { _title: "Metrics", url: "/#metrics" },
+    { _title: "Revenue", url: "/#revenue" },
+    { _title: "Vision", url: "/#vision" },
   ];
 
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, url: string) => {
+    if (url.startsWith("/#")) {
+      e.preventDefault();
+      const id = url.replace("/#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        setMobileMenuOpen(false);
+      }
+    }
+  };
+
   return (
-    <header className="sticky left-0 top-0 z-[110] flex w-full flex-col border-b border-border/40" style={{backgroundColor: 'var(--brand-background)'}}>
+    <header
+      className={`fixed left-0 top-0 z-[110] flex w-full flex-col transition-all duration-300 ${scrolled ? "bg-[#020617]/80 backdrop-blur-md border-b border-white/5 py-2" : "bg-transparent py-4"
+        }`}
+    >
       <div className="flex h-16">
         <div className="container mx-auto flex w-full items-center justify-between px-6 lg:px-8">
           {/* Logo */}
@@ -26,18 +49,19 @@ export const Header = () => {
             unstyled
             className="flex items-center space-x-2 ring-offset-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg transition-all duration-200 hover:scale-105"
             href="/"
+            onClick={(e) => scrollToSection(e, "/#home")}
           >
             <div className="relative">
               <Image
-                src="/images/Logo.svg" 
+                src="/images/Logo.svg"
                 alt="Solvium Logo"
                 priority
                 height={40}
                 width={40}
-                className="drop-shadow-sm"
+                className="drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
               />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-white">
+            <span className="text-2xl font-bold text-white font-[family-name:var(--font-pixelify)] tracking-tight">
               Solvium
             </span>
           </ButtonLink>
@@ -45,15 +69,15 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
             {navItems.map((item) => (
-              <ButtonLink
+              <a
                 key={item._title}
-                unstyled
-                className="relative px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg group"
                 href={item.url}
+                onClick={(e) => scrollToSection(e, item.url)}
+                className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-all duration-200 rounded-lg group"
               >
                 <span className="relative z-10">{item._title}</span>
-                <div className="absolute inset-0 bg-accent/50 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-200 ease-out" />
-              </ButtonLink>
+                <div className="absolute inset-0 bg-white/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-200 ease-out" />
+              </a>
             ))}
           </nav>
 
@@ -65,7 +89,7 @@ export const Header = () => {
 
             {/* CTA Button */}
             <ButtonLink
-              className="hidden md:inline-flex bg-[#FF309b] hover:from-primary/90 hover:to-primary text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0"
+              className="hidden md:inline-flex bg-white text-black hover:bg-slate-200 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-all duration-300 border-0 font-bold rounded-full px-6"
               href="/games"
             >
               Play Now
@@ -73,14 +97,14 @@ export const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg transition-colors"
+              className="lg:hidden p-2 text-white/70 hover:text-white focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6" />
               )}
             </button>
           </div>
@@ -89,26 +113,21 @@ export const Header = () => {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-border/40 bg-background/95 backdrop-blur">
-          <nav className="container mx-auto px-6 py-4 space-y-1">
+        <div className="lg:hidden border-t border-white/10 bg-[#020617]/95 backdrop-blur-xl absolute top-full left-0 w-full shadow-2xl">
+          <nav className="container mx-auto px-6 py-6 space-y-2">
             {navItems.map((item) => (
-              <ButtonLink
+              <a
                 key={item._title}
-                unstyled
-                className="block w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all duration-200"
                 href={item.url}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => scrollToSection(e, item.url)}
+                className="block w-full text-left px-4 py-3 text-lg font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-[family-name:var(--font-pixelify)]"
               >
                 {item._title}
-              </ButtonLink>
+              </a>
             ))}
-            <div className="pt-4 border-t border-border/40 flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Appearance</span>
-              <ThemeSwitcher />
-            </div>
-            <div className="pt-2">
+            <div className="pt-6 mt-4 border-t border-white/10">
               <ButtonLink
-                className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg"
+                className="w-full bg-white text-black hover:bg-slate-200 font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                 href="/games"
                 onClick={() => setMobileMenuOpen(false)}
               >
